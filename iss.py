@@ -46,6 +46,7 @@ def get_passes(lon, lat, alt, n):
     """Compute n number of passes of the ISS for a location"""
 
     # Get latest TLE from redis
+    import pdb; pdb.set_trace()
     tle = json.loads(r.get("iss_tle"))
     iss = ephem.readtle(str(tle[0]), str(tle[1]), str(tle[2]))
 

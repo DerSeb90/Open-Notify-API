@@ -1,11 +1,12 @@
 import redis
 import json
-import urllib2
+import urllib.request as urllib2
 import datetime
 from calendar import timegm
 import time
 import os
 import sys
+import ssl
 
 REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 r = redis.StrictRedis.from_url(REDIS_URL)
@@ -18,13 +19,16 @@ url = "http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSS
 def update_tle():
     # Open a http request
     req = urllib2.Request(url)
-    response = urllib2.urlopen(req)
-    data = response.read()
+    context = ssl._create_unverified_context()
+    response = urllib2.urlopen(req, context=context)
+    data = str(response.read())
 
     # parse the HTML
     data = data.split("<PRE>")[1]
     data = data.split("</PRE>")[0]
     data = data.split("Vector Time (GMT): ")[1:]
+    print(data)
+    import pdb; pdb.set_trace()
 
     for group in data:
         # Time the vector is valid for
@@ -42,7 +46,7 @@ def update_tle():
         # More parsing
         tle = group.split("TWO LINE MEAN ELEMENT SET")[1]
         tle = tle[8:160]
-        lines = tle.split('\n')[0:3]
+        lines = tle.split('\\n')[0:3]
 
         # Most recent TLE
         now = datetime.datetime.utcnow()
@@ -65,9 +69,9 @@ def update_tle():
 
 
 if __name__ == '__main__':
-    print "Updating ISS TLE from JSC..."
+    print("Updating ISS TLE from JSC...")
     try:
         update_tle()
     except:
         exctype, value = sys.exc_info()[:2]
-        print "Error:", exctype, value
+        print("Error:"), exctype, value
