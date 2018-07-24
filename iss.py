@@ -31,22 +31,10 @@ def get_tle():
     """Grab the current TLE"""
     return json.loads(r.get("iss_tle"))
 
-
-def get_tle_time():
-    """Grab the current TLE time"""
-    return r.get("iss_tle_time")
-
-
-def get_tle_update():
-    """Grab the tle update time"""
-    return r.get("iss_tle_last_update")
-
-
 def get_passes(lon, lat, alt, n):
     """Compute n number of passes of the ISS for a location"""
 
     # Get latest TLE from redis
-    import pdb; pdb.set_trace()
     tle = json.loads(r.get("iss_tle"))
     iss = ephem.readtle(str(tle[0]), str(tle[1]), str(tle[2]))
 
@@ -66,7 +54,7 @@ def get_passes(lon, lat, alt, n):
 
     # Predict passes
     passes = []
-    for p in xrange(n):
+    for p in range(n):
         tr, azr, tt, altt, ts, azs = location.next_pass(iss)
         duration = int((ts - tr) * 60 * 60 * 24)
         year, month, day, hour, minute, second = tr.tuple()
