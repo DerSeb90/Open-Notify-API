@@ -54,6 +54,7 @@ Docs are in the gh-pages branch, or on the web here:
 
 * Updated from Python v2.7 to v3.6
 * Changed data source from NASA to Celestrak to simplify parsing
+* Implemented Flask-Cors package to enable cross-origin resource sharing
 * Deployed using https to allow integration with other https sites. Modern browsers will block a mixed content request (i.e. request to http from https).
 
 ## Heroku Deployment
