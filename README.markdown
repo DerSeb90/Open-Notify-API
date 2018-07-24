@@ -1,10 +1,5 @@
 # Open Nofity APIs
 
-![](https://img.shields.io/badge/language-python%202-green.svg)
-[![Build Status](https://travis-ci.org/open-notify/Open-Notify-API.svg)](https://travis-ci.org/open-notify/Open-Notify-API)
-[![Requirements Status](https://requires.io/github/open-notify/Open-Notify-API/requirements.svg?branch=master)](https://requires.io/github/open-notify/Open-Notify-API/requirements/?branch=master)
-[![Docs](https://readthedocs.org/projects/open-notify-api/badge/?version=latest)](http://open-notify-api.readthedocs.org/)
-
 
 APIs for [api.open-notify.org](http://api.open-notify.org)
 
@@ -55,9 +50,24 @@ Docs are in the gh-pages branch, or on the web here:
  - [Open Notify API Documentation](http://open-notify.org/Open-Notify-API/)
 
 
-## License
+## Modifications from original source code:
 
-Copyright (C) 2016 Nathan Bergey
+* Updated from Python v2.7 to v3.6
+* Changed data source from NASA to Celestrak to simplify parsing
+* Deployed using https to allow integration with other https sites. Modern browsers will block a mixed content request (i.e. request to http from https).
+
+## Heroku Deployment
+
+To deploy to heroku:
+
+* Create a Heroku app and push the code
+* Provision redis add-on
+* Modify the name of the Redis URL environmental variable from REDIS_URL to REDISTOGO_URL
+* Provision scheduler add-on
+* Create a daily recurring task: `$python update.py`
+
+
+## License
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
